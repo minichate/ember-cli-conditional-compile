@@ -1,7 +1,7 @@
 {
   "name": "ember-cli-conditional-compile",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.1",
+  "description": "Conditional compilation (feature-flags) for Ember apps",
   "directories": {
     "doc": "doc"
   },
@@ -9,7 +9,7 @@
     "start": "ember server",
     "build": "ember build"
   },
-  "repository": "",
+  "repository": "https://github.com/minichate/ember-cli-conditional-compile.git",
   "engines": {
     "node": ">= 0.10.0"
   },
