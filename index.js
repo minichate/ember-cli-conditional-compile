@@ -33,7 +33,6 @@ module.exports = {
     target.registry.remove('template', 'broccoli-ember-hbs-template-compiler');
     target.registry.add('template', {
       name: 'conditional-compile-template',
-      ext: 'hbs',
       toTree: function(tree) {
         Object.keys(config.featureFlags).map(function(flag) {
           var replaceRegex = new RegExp(
@@ -49,7 +48,7 @@ module.exports = {
             }]
           });
         });
-        return templateCompiler(tree);
+        return templateCompiler(tree, {module: true});
       }
     }, ['hbs', 'handlebars']);
   },
