@@ -5,6 +5,7 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var merge = require('lodash-node/modern/objects/merge');
 var replace = require('broccoli-replace');
 var chalk = require('chalk');
+var templateCompiler = require('broccoli-ember-hbs-template-compiler')
 
 module.exports = {
   name: 'ember-cli-conditional-compile',
@@ -24,6 +25,33 @@ module.exports = {
 
     target.options.minifyJS = merge(target.options.minifyJS, options);
     this.enableCompile = target.options.minifyJS.enabled;
+
+    if (!this.enableCompile) {
+      return
+    }
+
+    target.registry.remove('template', 'broccoli-ember-hbs-template-compiler');
+    target.registry.add('template', {
+      name: 'conditional-compile-template',
+      ext: 'hbs',
+      toTree: function(tree) {
+        Object.keys(config.featureFlags).map(function(flag) {
+          var replaceRegex = new RegExp(
+            '{{#if-flag-' + flag + '}}([\\s\\S]*?)(?:{{\/if-flag-' + flag + '}}|(?:{{else}}([\\s\\S]*?){{\/if-flag-' + flag + '}}))',
+            'gmi'
+          );
+          var replacement = config.featureFlags[flag] ? "$1" : "$2";
+          tree = replace(tree, {
+            files: ['**/*'],
+            patterns: [{
+              match: replaceRegex,
+              replacement: replacement
+            }]
+          });
+        });
+        return templateCompiler(tree);
+      }
+    }, ['hbs', 'handlebars']);
   },
 
   postprocessTree: function(type, tree) {
@@ -47,17 +75,20 @@ module.exports = {
       }
     });
 
-    if (!this.enableCompile) {
-      tree = replace(tree, {
-        files: ['app/initializers/ember-cli-conditional-compile-features.js'],
-        patterns: [{
-          match: /EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS/g,
-          replacement: JSON.stringify(config.featureFlags || {})
-        }]
-      });
-    } else {
+    tree = replace(tree, {
+      files: ['app/initializers/ember-cli-conditional-compile-features.js', 'app/initializers/conditional-compile.js'],
+      patterns: [{
+        match: /EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS/g,
+        replacement: JSON.stringify(config.featureFlags || {})
+      }]
+    });
+
+    if (this.enableCompile) {
       excludes = excludes.concat(
         /app\/initializers\/ember-cli-conditional-compile-features.js/
+      );
+      excludes = excludes.concat(
+        /app\/initializers\/conditional-compile.js/
       );
     }
 
