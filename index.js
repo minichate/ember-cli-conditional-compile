@@ -36,31 +36,18 @@ module.exports = {
       ext: 'hbs',
       toTree: function(tree) {
         Object.keys(config.featureFlags).map(function(flag) {
-          if (!config.featureFlags[flag]) {
-            var replaceRegex = new RegExp(
-              '{{#if-flag-' + flag + '}}([\\s\\S]+?){{\\/if-flag-' + flag + '}}',
-              'gmi'
-            );
-            tree = replace(tree, {
-              files: ['**/*'],
-              patterns: [{
-                match: replaceRegex,
-                replacement: ''
-              }]
-            });
-          } else {
-            var replaceRegex = new RegExp(
-              '{{#if-flag-' + flag + '}}([\\s\\S]+?){{\\/if-flag-' + flag + '}}',
-              'gmi'
-            );
-            tree = replace(tree, {
-              files: ['**/*'],
-              patterns: [{
-                match: replaceRegex,
-                replacement: "$1"
-              }]
-            });
-          }
+          var replaceRegex = new RegExp(
+            '{{#if-flag-' + flag + '}}([\\s\\S]*?)(?:{{\/if-flag-' + flag + '}}|(?:{{else}}([\\s\\S]*?){{\/if-flag-' + flag + '}}))',
+            'gmi'
+          );
+          var replacement = config.featureFlags[flag] ? "$1" : "$2";
+          tree = replace(tree, {
+            files: ['**/*'],
+            patterns: [{
+              match: replaceRegex,
+              replacement: replacement
+            }]
+          });
         });
         return templateCompiler(tree);
       }
