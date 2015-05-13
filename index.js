@@ -11,6 +11,7 @@ var HtmlbarsCompiler = require('ember-cli-htmlbars');
 module.exports = {
   name: 'ember-cli-conditional-compile',
   enableCompile: false,
+  registry: null,
 
   included: function(app, parentAddon) {
     var target = (parentAddon || app);
@@ -23,6 +24,8 @@ module.exports = {
       )
     );
 
+    this.registry = target.registry;
+
     var options = {
       options: {
         compress: {
@@ -30,6 +33,7 @@ module.exports = {
         }
       }
     };
+    var astPlugins = this.astPlugins();
 
     target.options.minifyJS = merge(target.options.minifyJS, options);
     this.enableCompile = target.options.minifyJS.enabled;
@@ -60,7 +64,10 @@ module.exports = {
         });
         return new HtmlbarsCompiler(tree, {
           isHTMLBars: true,
-           templateCompiler: templateCompiler
+          templateCompiler: templateCompiler,
+          plugins: {
+            ast: astPlugins
+          }
         });
       }
     }, ['hbs', 'handlebars']);
@@ -108,5 +115,15 @@ module.exports = {
       exclude: excludes,
       description: 'Funnel: Conditionally Filtered App'
     });
+  },
+
+  astPlugins: function() {
+    var pluginWrappers = this.registry.load('htmlbars-ast-plugin');
+    var plugins = pluginWrappers.map(function(wrapper) {
+      return wrapper.plugin;
+    });
+
+    return plugins;
   }
+
 };
