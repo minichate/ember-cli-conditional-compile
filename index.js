@@ -5,7 +5,8 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var merge = require('lodash-node/modern/objects/merge');
 var replace = require('broccoli-replace');
 var chalk = require('chalk');
-var templateCompiler = require('broccoli-ember-hbs-template-compiler')
+var path = require('path');
+var HtmlbarsCompiler = require('ember-cli-htmlbars');
 
 module.exports = {
   name: 'ember-cli-conditional-compile',
@@ -14,6 +15,13 @@ module.exports = {
   included: function(app, parentAddon) {
     var target = (parentAddon || app);
     var config = this.project.config(target.env);
+    var templateCompiler = require(
+      path.join(
+        this.project.root,
+        this.project.bowerDirectory,
+        '/ember/ember-template-compiler'
+      )
+    );
 
     var options = {
       options: {
@@ -27,10 +35,12 @@ module.exports = {
     this.enableCompile = target.options.minifyJS.enabled;
 
     if (!this.enableCompile) {
-      return
+      return;
     }
 
+
     target.registry.remove('template', 'broccoli-ember-hbs-template-compiler');
+    target.registry.remove('template', 'ember-cli-htmlbars');
     target.registry.add('template', {
       name: 'conditional-compile-template',
       toTree: function(tree) {
@@ -48,7 +58,10 @@ module.exports = {
             }]
           });
         });
-        return templateCompiler(tree, {module: true});
+        return new HtmlbarsCompiler(tree, {
+          isHTMLBars: true,
+           templateCompiler: templateCompiler
+        });
       }
     }, ['hbs', 'handlebars']);
   },
