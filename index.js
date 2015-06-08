@@ -50,7 +50,7 @@ module.exports = {
       toTree: function(tree) {
         Object.keys(config.featureFlags).map(function(flag) {
           var replaceRegex = new RegExp(
-            '{{#if-flag-' + flag + '}}([\\s\\S]*?)(?:{{\/if-flag-' + flag + '}}|(?:{{else}}([\\s\\S]*?){{\/if-flag-' + flag + '}}))',
+            '{{#if-flag-' + flag + '}}([\\s\\S]*?)(?:{{\/if-flag-' + flag + '}}|(?:{{else-flag-' + flag + '}}([\\s\\S]*?){{\/if-flag-' + flag + '}}))',
             'gmi'
           );
           var replacement = config.featureFlags[flag] ? "$1" : "$2";
