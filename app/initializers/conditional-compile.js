@@ -11,7 +11,7 @@ var initializer = {
       Ember.Handlebars.registerHelper('if-flag-' + flag, function(options) {
         if (feature_flags[flag]) {
           return options.fn(this);
-        } else {
+        } else if (options.inverse) {
           return options.inverse(this);
         }
       });
