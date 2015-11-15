@@ -95,7 +95,7 @@ module.exports = {
     });
 
     tree = replace(tree, {
-      files: ['app/initializers/ember-cli-conditional-compile-features.js', 'app/initializers/conditional-compile.js'],
+      files: [config.modulePrefix + '/initializers/ember-cli-conditional-compile-features.js', config.modulePrefix + '/initializers/conditional-compile.js'],
       patterns: [{
         match: /EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS/g,
         replacement: JSON.stringify(config.featureFlags || {})
