@@ -16,8 +16,6 @@ module.exports = {
     var target = (parentAddon || app);
     var config = this.project.config(target.env);
 
-    this.registry = target.registry;
-
     var options = {
       options: {
         compress: {
@@ -29,7 +27,7 @@ module.exports = {
     target.options.minifyJS = merge(target.options.minifyJS, options);
     this.enableCompile = target.options.minifyJS.enabled;
 
-    var compiler = new TemplateCompiler(this.registry, this.project);
+    var compiler = new TemplateCompiler(target.registry, this.project);
 
     target.registry.remove('template', 'broccoli-ember-hbs-template-compiler');
     target.registry.remove('template', 'ember-cli-htmlbars');
@@ -61,18 +59,18 @@ module.exports = {
       }
     });
 
-    tree = replace(tree, {
-      files: [config.modulePrefix + '/initializers/ember-cli-conditional-compile-features.js'],
-      patterns: [{
-        match: /EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS/g,
-        replacement: JSON.stringify(config.featureFlags || {})
-      }]
-    });
-
     if (this.enableCompile) {
       excludes = excludes.concat(
         /app\/initializers\/ember-cli-conditional-compile-features.js/
       );
+    } else {
+      tree = replace(tree, {
+        files: [config.modulePrefix + '/initializers/ember-cli-conditional-compile-features.js'],
+        patterns: [{
+          match: /EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS/g,
+          replacement: JSON.stringify(config.featureFlags || {})
+        }]
+      });
     }
 
     return new Funnel(tree, {
