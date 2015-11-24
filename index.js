@@ -5,8 +5,7 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var merge = require('lodash-node/modern/objects/merge');
 var replace = require('broccoli-replace');
 var chalk = require('chalk');
-var path = require('path');
-var HtmlbarsCompiler = require('ember-cli-htmlbars');
+var TemplateCompiler = require('./lib/template-compiler');
 
 module.exports = {
   name: 'ember-cli-conditional-compile',
@@ -16,13 +15,6 @@ module.exports = {
   included: function(app, parentAddon) {
     var target = (parentAddon || app);
     var config = this.project.config(target.env);
-    var templateCompiler = require(
-      path.join(
-        this.project.root,
-        this.project.bowerDirectory,
-        '/ember/ember-template-compiler'
-      )
-    );
 
     this.registry = target.registry;
 
@@ -33,39 +25,19 @@ module.exports = {
         }
       }
     };
-    var astPlugins = this.astPlugins();
 
     target.options.minifyJS = merge(target.options.minifyJS, options);
     this.enableCompile = target.options.minifyJS.enabled;
 
+    var compiler = new TemplateCompiler(this.registry, this.project);
+
     target.registry.remove('template', 'broccoli-ember-hbs-template-compiler');
     target.registry.remove('template', 'ember-cli-htmlbars');
-    target.registry.add('template', {
-      name: 'conditional-compile-template',
-      toTree: function(tree) {
-        Object.keys(config.featureFlags).map(function(flag) {
-          var replaceRegex = new RegExp(
-            '{{#if-flag-' + flag + '}}([\\s\\S]*?)(?:{{\/if-flag-' + flag + '}}|(?:{{else-flag-' + flag + '}}([\\s\\S]*?){{\/if-flag-' + flag + '}}))',
-            'gmi'
-          );
-          var replacement = config.featureFlags[flag] ? "$1" : "$2";
-          tree = replace(tree, {
-            files: ['**/*'],
-            patterns: [{
-              match: replaceRegex,
-              replacement: replacement
-            }]
-          });
-        });
-        return new HtmlbarsCompiler(tree, {
-          isHTMLBars: true,
-          templateCompiler: templateCompiler,
-          plugins: {
-            ast: astPlugins
-          }
-        });
-      }
-    }, ['hbs', 'handlebars']);
+    target.registry.add(
+      'template',
+      compiler.plugin(config.featureFlags),
+      ['hbs', 'handlebars']
+    );
   },
 
   postprocessTree: function(type, tree) {
@@ -107,15 +79,5 @@ module.exports = {
       exclude: excludes,
       description: 'Funnel: Conditionally Filtered App'
     });
-  },
-
-  astPlugins: function() {
-    var pluginWrappers = this.registry.load('htmlbars-ast-plugin');
-    var plugins = pluginWrappers.map(function(wrapper) {
-      return wrapper.plugin;
-    });
-
-    return plugins;
   }
-
 };
