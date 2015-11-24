@@ -38,11 +38,6 @@ module.exports = {
     target.options.minifyJS = merge(target.options.minifyJS, options);
     this.enableCompile = target.options.minifyJS.enabled;
 
-    if (!this.enableCompile) {
-      return;
-    }
-
-
     target.registry.remove('template', 'broccoli-ember-hbs-template-compiler');
     target.registry.remove('template', 'ember-cli-htmlbars');
     target.registry.add('template', {
@@ -95,7 +90,7 @@ module.exports = {
     });
 
     tree = replace(tree, {
-      files: [config.modulePrefix + '/initializers/ember-cli-conditional-compile-features.js', config.modulePrefix + '/initializers/conditional-compile.js'],
+      files: [config.modulePrefix + '/initializers/ember-cli-conditional-compile-features.js'],
       patterns: [{
         match: /EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS/g,
         replacement: JSON.stringify(config.featureFlags || {})
@@ -105,9 +100,6 @@ module.exports = {
     if (this.enableCompile) {
       excludes = excludes.concat(
         /app\/initializers\/ember-cli-conditional-compile-features.js/
-      );
-      excludes = excludes.concat(
-        /app\/initializers\/conditional-compile.js/
       );
     }
 
