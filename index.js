@@ -27,14 +27,13 @@ module.exports = {
     target.options.minifyJS = merge(target.options.minifyJS, options);
     this.enableCompile = target.options.minifyJS.enabled;
 
-    var compiler = new TemplateCompiler(target.registry, this.project);
+    var compiler = new TemplateCompiler(config.featureFlags);
 
-    target.registry.remove('template', 'broccoli-ember-hbs-template-compiler');
-    target.registry.remove('template', 'ember-cli-htmlbars');
-    target.registry.add(
-      'template',
-      compiler.plugin(config.featureFlags),
-      ['hbs', 'handlebars']
+    app.registry.add(
+      'htmlbars-ast-plugin', {
+        name: 'conditional-compile-template',
+        plugin: function() { return compiler; }
+      }
     );
   },
 
