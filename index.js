@@ -29,7 +29,7 @@ module.exports = {
 
     var compiler = new TemplateCompiler(config.featureFlags);
 
-    target.registry.add(
+    app.registry.add(
       'htmlbars-ast-plugin', {
         name: 'conditional-compile-template',
         plugin: function() { return compiler; }
