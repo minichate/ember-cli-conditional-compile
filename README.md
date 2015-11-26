@@ -10,6 +10,9 @@ This is an ember-cli addon, so all you need to do is
     npm install --save ember-cli-conditional-compile
 ```
 
+You should use the `0.3.x` series of releases if you're on Ember 1.13.6 or
+older. If you're on Ember 1.13.7 you should use the `0.4.x` version.
+
 To actually use the feature switches you'll need to add some configuration in your `environment.js` file. For example, lets pretend you want to have two feature switches; `ENABLE_FOO` and `ENABLE_BAR`:
 
 ```javascript
