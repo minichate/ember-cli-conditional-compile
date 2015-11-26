@@ -27,12 +27,10 @@ module.exports = {
     target.options.minifyJS = merge(target.options.minifyJS, options);
     this.enableCompile = target.options.minifyJS.enabled;
 
-    var compiler = new TemplateCompiler(config.featureFlags);
-
-    app.registry.add(
+    target.registry.add(
       'htmlbars-ast-plugin', {
         name: 'conditional-compile-template',
-        plugin: function() { return compiler; }
+        plugin: TemplateCompiler(config.featureFlags)
       }
     );
   },
