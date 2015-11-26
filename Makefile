@@ -17,7 +17,6 @@ release: guard-VERSION
 	git add ./package.json
 	git commit ./package.json -m 'Bump version to $(VERSION)'
 	git tag release/$(VERSION) -m 'ember-cli-conditional-compile $(VERSION) - $(DATE)'
-	git checkout -b release/$(VERSION)
 	git push $(REMOTE) --tags
 	git push $(REMOTE) master
 	npm publish
