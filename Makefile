@@ -12,7 +12,7 @@ release: guard-VERSION
 		echo "You must be on master to update the version"; \
 		exit 1; \
 	fi;
-	sed -i "" -e 's/version": ".*/version": "$(VERSION)",/' package.json
+	sed -i "" -e 's/"version": ".*/"version": "$(VERSION)",/' package.json
 
 	git add ./package.json
 	git commit ./package.json -m 'Bump version to $(VERSION)'
