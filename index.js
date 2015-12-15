@@ -2,7 +2,7 @@
 
 var Funnel = require('broccoli-funnel');
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
-var merge = require('lodash-node/modern/objects/merge');
+var merge = require('lodash.merge');
 var replace = require('broccoli-replace');
 var chalk = require('chalk');
 var TemplateCompiler = require('./lib/template-compiler');
