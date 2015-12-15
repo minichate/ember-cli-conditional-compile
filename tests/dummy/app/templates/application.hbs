@@ -2,12 +2,14 @@
 
 {{outlet}}
 
-OHAI
-
 {{#if-flag-ENABLE_FOO}}
-ENABLED_FOO!! \o/
+<div class="enabled_foo">ENABLED_FOO!! \o/</div>
+{{else}}
+<div class="disabled_foo">DISABLED_FOO!! \o/</div>
 {{/if-flag-ENABLE_FOO}}
 
 {{#if-flag-ENABLE_BAR}}
-ENABLED_BAR!! \o/
+<div class="enabled_bar">ENABLED_BAR!! \o/</div>
+{{else}}
+<div class="disabled_bar">DISABLED_BAR!! \o/</div>
 {{/if-flag-ENABLE_BAR}}
