@@ -14,7 +14,7 @@ module.exports = {
 
   init: function() {
     var checker = new VersionChecker(this);
-    checker.for('ember', 'bower').assertAbove('1.13.7');
+    checker.for('ember', 'bower').assertAbove('1.13.6');
   },
 
   included: function(app, parentAddon) {
