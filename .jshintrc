@@ -8,9 +8,11 @@
     "beforeEach",
     "afterEach",
     "after",
-    "before"
+    "before",
+    "ENABLE_FOO",
+    "ENABLE_BAR"
   ],
-  "browser": false,
+  "browser": true,
   "boss": true,
   "curly": true,
   "debug": false,
