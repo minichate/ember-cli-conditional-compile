@@ -78,7 +78,7 @@ if (ENABLE_FOO) {
 }
 ```
 
-In Handlebars/HTMLBars templates, you can also make use for the templates using the `if-flag-` helpers:
+In Handlebars/HTMLBars templates, you can also make use of the flags using the `if-flag-` helpers:
 
 ```hbs
 {{#if-flag-ENABLE_FOO}}
