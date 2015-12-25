@@ -8,6 +8,7 @@ test('enabled flags are shown', function(assert) {
 
   andThen(function() {
     assert.equal(find('.enabled_foo').length, 1);
+    assert.equal(find('.enabled_foo').text(), 'ENABLED_FOO!! \\o/');
   });
 });
 
@@ -24,6 +25,7 @@ test('disabled else blocks are shown', function(assert) {
 
   andThen(function() {
     assert.equal(find('.disabled_bar').length, 1);
+    assert.equal(find('.disabled_bar').text(), 'DISABLED_BAR!! \\o/');
   });
 });
 
