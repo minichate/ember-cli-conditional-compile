@@ -20,3 +20,11 @@ test('precompile disabled flags', function(assert) {
 
   assert.equal(this.$().text().trim(), '');
 });
+
+test('precompile else block', function(assert) {
+  this.render(hbs`
+    {{#if-flag-ENABLE_BAR}}Bar{{else}}Baz{{/if-flag-ENABLE_BAR}}
+  `);
+
+  assert.equal(this.$().text().trim(), 'Baz');
+});
