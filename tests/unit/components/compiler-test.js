@@ -1,7 +1,7 @@
 import hbs from 'htmlbars-inline-precompile';
 import { moduleForComponent, test } from 'ember-qunit';
 
-moduleForComponent('my-component', {
+moduleForComponent('Compiler | precompile', {
   integration: true
 });
 
