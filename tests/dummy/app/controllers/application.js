@@ -1,6 +1,3 @@
-/* globals ENABLE_FOO */
-/* globals ENABLE_BAR */
-
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
