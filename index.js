@@ -5,12 +5,17 @@ var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var merge = require('lodash.merge');
 var replace = require('broccoli-replace');
 var chalk = require('chalk');
+var VersionChecker = require('ember-cli-version-checker');
 var TemplateCompiler = require('./lib/template-compiler');
 
 module.exports = {
   name: 'ember-cli-conditional-compile',
   enableCompile: false,
-  registry: null,
+
+  init: function() {
+    var checker = new VersionChecker(this);
+    checker.for('ember', 'bower').assertAbove('1.13.6');
+  },
 
   included: function(app, parentAddon) {
     var target = (parentAddon || app);
