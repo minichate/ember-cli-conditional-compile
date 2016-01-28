@@ -63,7 +63,7 @@ module.exports = {
 
     if (this.enableCompile) {
       excludes = excludes.concat(
-        /app\/initializers\/ember-cli-conditional-compile-features.js/
+        /ember-cli-conditional-compile-features.js/
       );
     } else {
       tree = replace(tree, {
