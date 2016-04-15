@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "lodash.merge": "^3.3.2",
-    "broccoli-replace": "0.11.0",
+    "broccoli-replace": "alexBaizeau/broccoli-replace#bcfae7cd67984ce6f837854a892b09b6625ae233",
     "broccoli-funnel": "~1.0.0",
     "chalk": "~1.1.0",
     "ember-cli-babel": "^5.1.6",
