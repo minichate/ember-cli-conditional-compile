@@ -13,6 +13,7 @@ module.exports = {
   enableCompile: false,
 
   init: function() {
+    this._super.init && this._super.init.apply(this, arguments);
     var checker = new VersionChecker(this);
     checker.for('ember', 'bower').assertAbove('1.13.6');
   },
