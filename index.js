@@ -15,7 +15,8 @@ module.exports = {
   init: function() {
     this._super.init && this._super.init.apply(this, arguments);
     var checker = new VersionChecker(this);
-    checker.for('ember', 'bower').assertAbove('1.13.6');
+    var ember = checker.forEmber();
+    ember.isAbove('1.13.6');
   },
 
   included: function(app, parentAddon) {
