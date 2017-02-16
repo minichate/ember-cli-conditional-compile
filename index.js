@@ -37,10 +37,7 @@ module.exports = {
     target.registry.add(
       'htmlbars-ast-plugin', {
         name: 'conditional-compile-template',
-        plugin: TemplateCompiler(config.featureFlags),
-        baseDir: function() {
-          return __dirname;
-        }
+        plugin: TemplateCompiler(config.featureFlags)
       }
     );
   },
