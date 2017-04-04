@@ -88,6 +88,16 @@ In Handlebars/HTMLBars templates, you can also make use of the flags using the `
 {{/if-flag-ENABLE_FOO}}
 ```
 
+You can also use the `unless-flag-` style block helper:
+
+```hbs
+{{#unless-flag-ENABLE_FOO}}
+<p>Foo is disabled</p>
+{{else}}
+<p>Foo is enabled! \o/</p>
+{{/unless-flag-ENABLE_FOO}}
+```
+
 ## Production environment
 
 We use UglifyJS's `global_defs` feature to replace the value of feature flags with their constant values. UglifyJS's dead code implementation than cleans up unreachable code and performs inlining, such that:
