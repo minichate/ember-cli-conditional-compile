@@ -45,3 +45,21 @@ test('enabled else blocks are not shown', function(assert) {
     assert.equal(find('.disabled_foo').length, 0);
   });
 });
+
+test('new style flag enabled blocks are shown', function(assert) {
+  visit('/');
+
+  andThen(function() {
+    assert.equal(find('.new_flag_enabled_foo').length, 1);
+    assert.equal(find('.new_flag_disabled_foo').length, 0);
+  });
+});
+
+test('new style unless flag enabled blocks are shown', function(assert) {
+  visit('/');
+
+  andThen(function() {
+    assert.equal(find('.new_flag_unless_enabled_bar').length, 1);
+    assert.equal(find('.new_flag_unless_disabled_bar').length, 0);
+  });
+});

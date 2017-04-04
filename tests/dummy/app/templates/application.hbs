@@ -25,3 +25,15 @@
 {{else}}
 <div class="unless_disabled_bar">DISABLED_BAR!! \o/</div>
 {{/unless-flag-ENABLE_BAR}}
+
+{{#if-flag ENABLE_FOO}}
+  <div class="new_flag_enabled_foo">ENABLED_FOO!! \o/</div>
+{{else}}
+  <div class="new_flag_disabled_foo">DISABLED_FOO!! \o/</div>
+{{/if-flag}}
+
+{{#unless-flag ENABLE_BAR}}
+  <div class="new_flag_unless_enabled_bar">ENABLE_BAR!! \o/</div>
+{{else}}
+  <div class="new_flag_unless_disabled_bar">DISABLED_BAR!! \o/</div>
+{{/unless-flag}}
