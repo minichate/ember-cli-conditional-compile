@@ -12,6 +12,15 @@ test('enabled flags are shown', function(assert) {
   });
 });
 
+test('enabled flags are shown for unless helper', function(assert) {
+  visit('/');
+
+  andThen(function() {
+    assert.equal(find('.unless_disabled_foo').length, 1);
+    assert.equal(find('.unless_disabled_foo').text(), 'DISABLED_FOO!! \\o/');
+  });
+});
+
 test('disabled flags are not shown', function(assert) {
   visit('/');
 
