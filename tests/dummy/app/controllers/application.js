@@ -5,7 +5,7 @@ export default Ember.Controller.extend({
     return ENABLE_FOO;
   }),
 
-  bar:  Ember.computed(() => {
+  bar: Ember.computed(() => {
     return ENABLE_BAR;
   })
 });
