@@ -78,24 +78,24 @@ if (ENABLE_FOO) {
 }
 ```
 
-In Handlebars/HTMLBars templates, you can also make use of the flags using the `if-flag-` block helper:
+In Handlebars/HTMLBars templates, you can also make use of the flags using the `if-flag` block helper:
 
 ```hbs
-{{#if-flag-ENABLE_FOO}}
+{{#if-flag ENABLE_FOO}}
 <p>Foo is enabled! \o/</p>
 {{else}}
 <p>Foo is disabled</p>
-{{/if-flag-ENABLE_FOO}}
+{{/if-flag}}
 ```
 
-You can also use the `unless-flag-` style block helper:
+You can also use the `unless-flag` style block helper:
 
 ```hbs
-{{#unless-flag-ENABLE_FOO}}
+{{#unless-flag ENABLE_FOO}}
 <p>Foo is disabled</p>
 {{else}}
 <p>Foo is enabled! \o/</p>
-{{/unless-flag-ENABLE_FOO}}
+{{/unless-flag}}
 ```
 
 ## Production environment
