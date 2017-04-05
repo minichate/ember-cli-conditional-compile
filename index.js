@@ -58,7 +58,7 @@ module.exports = {
     var excludes = [];
 
     Object.keys(config.featureFlags).map(function(flag) {
-      if (!config.featureFlags[flag] && config.includeDirByFlag[flag]) {
+      if (config.includeDirByFlag && !config.featureFlags[flag] && config.includeDirByFlag[flag]) {
         excludes = excludes.concat(config.includeDirByFlag[flag]);
       }
     });
