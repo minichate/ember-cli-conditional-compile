@@ -1,5 +1,3 @@
-/* jshint ignore:start */
-
 import Ember from 'ember';
 
 var initializer = {
@@ -15,5 +13,3 @@ Object.keys(feature_flags).map(function(flag) {
 })
 
 export default initializer;
-
-/* jshint ignore:end */

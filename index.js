@@ -1,5 +1,3 @@
-/* jshint node: true */
-
 var Funnel = require('broccoli-funnel');
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var merge = require('lodash.merge');
