@@ -11,11 +11,12 @@ The goal of ember-cli-conditional-compile is to provide easy to use feature swit
 This is an ember-cli addon, so all you need to do is
 
 ```bash
-    npm install --save ember-cli-conditional-compile
+    ember install ember-cli-conditional-compile
 ```
 
 You should use the `0.3.x` series of releases if you're on Ember 1.13.6 or
-older. If you're on Ember 1.13.7 you should use the `0.4.x` version.
+older. If you're on Ember 1.13.7 or newer you must use at least the `0.4.x`
+version.
 
 To actually use the feature switches you'll need to add some configuration in your `environment.js` file. For example, lets pretend you want to have two feature switches; `ENABLE_FOO` and `ENABLE_BAR`:
 
@@ -121,6 +122,27 @@ or the following if `ENABLE_FOO` is configured to be `false`;
 ```javascript
 // empty since the condition can never be satisfied!
 ```
+
+Furthermore, if you use the HTMLBars helpers the AST transformations will shake
+out and remove impossible-to-reach sides of the condition:
+
+```hbs
+{{#if-flag ENABLE_FOO}}
+<p>Foo is enabled</p>
+{{else}}
+<p>This won't be reached, because ENABLE_FOO is true</p>
+{{/if-flag}}
+```
+
+will get transformed into:
+
+```hbs
+<p>Foo is enabled</p>
+```
+
+This is really handy, since it vastly cuts down on the amount of precompiled
+template code that your users need to download even though it'll never be
+executed!
 
 # Licence
 
