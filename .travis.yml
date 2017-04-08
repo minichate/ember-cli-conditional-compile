@@ -4,6 +4,7 @@ node_js:
   - "node"
 
 sudo: false
+cache: yarn
 
 env:
   - EMBER_TRY_SCENARIO=default
@@ -18,13 +19,11 @@ matrix:
 
 before_install:
   - export PATH=/usr/local/phantomjs-2.0.0/bin:$PATH
-  - "npm config set spin false"
-  - "npm install -g npm@^2"
 
 install:
   - npm install -g bower
-  - npm install
+  - yarn install
   - bower install
 
 script:
-  - ember try $EMBER_TRY_SCENARIO test
+  - ember try:one $EMBER_TRY_SCENARIO test
