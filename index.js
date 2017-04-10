@@ -13,7 +13,7 @@ module.exports = {
   init: function() {
     this._super.init && this._super.init.apply(this, arguments);
     var checker = new VersionChecker(this);
-    var ember = checker.for('ember', 'bower');
+    var ember = checker.forEmber();
     ember.assertAbove('2.9.0');
   },
 
