@@ -5,6 +5,7 @@ var replace = require('broccoli-replace');
 var chalk = require('chalk');
 var VersionChecker = require('ember-cli-version-checker');
 var TemplateCompiler = require('./lib/template-compiler');
+var hash = require('object-hash');
 
 module.exports = {
   name: 'ember-cli-conditional-compile',
@@ -12,9 +13,11 @@ module.exports = {
 
   init: function() {
     this._super.init && this._super.init.apply(this, arguments);
+
     var checker = new VersionChecker(this);
-    var ember = checker.forEmber();
-    ember.assertAbove('2.9.0');
+    checker.forEmber().assertAbove('2.9.0');
+    
+    this.htmlbarsVersion = checker.for('ember-cli-htmlbars', 'npm');
   },
 
   included: function(app, parentAddon) {
@@ -32,12 +35,26 @@ module.exports = {
     target.options.minifyJS = merge(target.options.minifyJS, options);
     this.enableCompile = target.options.minifyJS.enabled;
 
-    target.registry.add(
-      'htmlbars-ast-plugin', {
-        name: 'conditional-compile-template',
-        plugin: TemplateCompiler(config.featureFlags)
-      }
-    );
+    var templateCompilerInstance = {
+      name: 'conditional-compile-template',
+      plugin: TemplateCompiler(config.featureFlags)
+    }
+
+    if (this.htmlbarsVersion.satisfies('^1.3.0')) {
+      templateCompilerInstance['baseDir'] = function() {
+        return __dirname;
+      };
+
+      templateCompilerInstance['cacheKey'] = function() {
+        return hash(config.featureFlags);
+      };
+    } else {
+      console.log(chalk.yellow(
+          'Upgrade to ember-cli-htmlbars >= 1.3.0 to get build caching'
+      ));
+    }
+
+    target.registry.add('htmlbars-ast-plugin', templateCompilerInstance);
   },
 
   postprocessTree: function(type, tree) {
