@@ -16,7 +16,7 @@ module.exports = {
 
     var checker = new VersionChecker(this);
     checker.forEmber().assertAbove('2.9.0');
-    
+
     this.htmlbarsVersion = checker.for('ember-cli-htmlbars', 'npm');
   },
 
@@ -56,6 +56,33 @@ module.exports = {
 
     target.registry.add('htmlbars-ast-plugin', templateCompilerInstance);
   },
+
+  setupPreprocessorRegistry: function(type, registry) {
+    registry.add('js', {
+      name: 'ember-cli-conditional-compile',
+      ext: 'js',
+      toTree: (tree) => this.transpileTree(tree)
+    });
+  },
+
+  /**
+   * Inline feature flags value so that babili's dead code elimintation plugin
+   * removes the code non reachable.
+   */
+  transpileTree(tree, config) {
+    var esTranspiler = require('broccoli-babel-transpiler');
+    var inlineFeatureFlags = require('babel-plugin-inline-replace-variables');
+    var config = this.project.config(EmberApp.env());
+    if (!this.enableCompile) {
+      return tree;
+    }
+    return esTranspiler(tree, {
+      plugins: [
+        [ inlineFeatureFlags, config.featureFlags ]
+      ]
+    });
+  },
+
 
   postprocessTree: function(type, tree) {
     if (type !== 'js') return tree;
