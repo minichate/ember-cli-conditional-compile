@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-conditional-compile",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Conditional compilation (feature-flags) for Ember apps",
   "directories": {
     "doc": "doc",
