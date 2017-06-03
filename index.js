@@ -40,7 +40,7 @@ module.exports = {
       plugin: TemplateCompiler(config.featureFlags)
     }
 
-    if (this.htmlbarsVersion.satisfies('^1.3.0')) {
+    if (this.htmlbarsVersion.satisfies('>= 1.3.0')) {
       templateCompilerInstance['baseDir'] = function() {
         return __dirname;
       };
