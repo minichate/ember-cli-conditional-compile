@@ -1,8 +1,0 @@
-{
-  "name": "ember-cli-conditional-compile",
-  "dependencies": {
-    "ember": "2.13.3",
-    "ember-qunit": "1.0.0",
-    "qunit": "~2.3.3"
-  }
-}
