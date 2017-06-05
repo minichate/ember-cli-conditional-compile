@@ -82,21 +82,21 @@ if (ENABLE_FOO) {
 In Handlebars/HTMLBars templates, you can also make use of the flags using the `if-flag` block helper:
 
 ```hbs
-{{#if-flag ENABLE_FOO}}
+{{#if-flag-ENABLE_FOO}}
 <p>Foo is enabled! \o/</p>
 {{else}}
 <p>Foo is disabled</p>
-{{/if-flag}}
+{{/if-flag-ENABLE_FOO}}
 ```
 
 You can also use the `unless-flag` style block helper:
 
 ```hbs
-{{#unless-flag ENABLE_FOO}}
+{{#unless-flag-ENABLE_FOO}}
 <p>Foo is disabled</p>
 {{else}}
 <p>Foo is enabled! \o/</p>
-{{/unless-flag}}
+{{/unless-flag-ENABLE_FOO}}
 ```
 
 ## Production environment
@@ -127,11 +127,11 @@ Furthermore, if you use the HTMLBars helpers the AST transformations will shake
 out and remove impossible-to-reach sides of the condition:
 
 ```hbs
-{{#if-flag ENABLE_FOO}}
+{{#if-flag-ENABLE_FOO}}
 <p>Foo is enabled</p>
 {{else}}
 <p>This won't be reached, because ENABLE_FOO is true</p>
-{{/if-flag}}
+{{/if-flag-ENABLE_FOO}}
 ```
 
 will get transformed into:
