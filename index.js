@@ -72,6 +72,7 @@ module.exports = {
   transpileTree(tree, config) {
     var esTranspiler = require('broccoli-babel-transpiler');
     var inlineFeatureFlags = require('babel-plugin-inline-replace-variables');
+    inlineFeatureFlags.baseDir = function() { return __dirname; };
     var config = this.project.config(EmberApp.env());
     if (!this.enableCompile) {
       return tree;
