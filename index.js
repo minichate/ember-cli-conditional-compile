@@ -18,6 +18,7 @@ module.exports = {
     checker.forEmber().assertAbove('2.9.0');
 
     this.htmlbarsVersion = checker.for('ember-cli-htmlbars', 'npm');
+    this.uglifyVersion = checker.for('ember-cli-uglify', 'npm');
   },
 
   included: function(app, parentAddon) {
@@ -32,8 +33,13 @@ module.exports = {
       }
     };
 
-    target.options.minifyJS = merge(target.options.minifyJS, options);
-    this.enableCompile = target.options.minifyJS.enabled;
+    if (this.uglifyVersion.satisfies('>= 2.0.0')) {
+      target.options['ember-cli-uglify'].uglify = merge(target.options['ember-cli-uglify'].uglify, options.options);
+      this.enableCompile = target.options['ember-cli-uglify'].enabled;
+    } else {
+      target.options.minifyJS = merge(target.options.minifyJS, options);
+      this.enableCompile = target.options.minifyJS.enabled;
+    }
 
     var templateCompilerInstance = {
       name: 'conditional-compile-template',
