@@ -34,7 +34,7 @@ module.exports = {
     };
 
     if (this.uglifyVersion.satisfies('>= 2.0.0')) {
-      target.options['ember-cli-uglify'].uglify = merge(target.options['ember-cli-uglify'].uglify, options.options);
+      target.options = merge(target.options, { 'ember-cli-uglify': { uglify: options.options } });
       this.enableCompile = target.options['ember-cli-uglify'].enabled;
     } else {
       target.options.minifyJS = merge(target.options.minifyJS, options);
@@ -56,7 +56,7 @@ module.exports = {
       };
     } else {
       console.log(chalk.yellow(
-          'Upgrade to ember-cli-htmlbars >= 1.3.0 to get build caching'
+        'Upgrade to ember-cli-htmlbars >= 1.3.0 to get build caching'
       ));
     }
 
@@ -97,8 +97,8 @@ module.exports = {
 
     if (!config.featureFlags) {
       console.log(chalk.red(
-          'Could not find any feature flags.' +
-          'You may need to add them in your config/environment.js'
+        'Could not find any feature flags.' +
+        'You may need to add them in your config/environment.js'
       ));
       return tree;
     }
