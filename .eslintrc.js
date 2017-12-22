@@ -17,7 +17,8 @@ module.exports = {
     'ENABLE_BAR': true,
     'visit': true,
     'andThen': true,
-    'find': true
+    'find': true,
+    'window': true
   },
   rules: {
     'array-bracket-spacing': ['error', 'never'],

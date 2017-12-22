@@ -21,9 +21,10 @@ module.exports = {
     this.uglifyVersion = checker.for('ember-cli-uglify', 'npm');
   },
 
-  included: function(app, parentAddon) {
-    var target = (parentAddon || app);
-    var config = this.project.config(target.env);
+  included: function(parent) {
+    // https://ember-cli.com/api/classes/Addon.html#method_included
+    var app = parent.app || parent;
+    var config = this.project.config(app.env);
 
     var options = {
       options: {
@@ -34,11 +35,11 @@ module.exports = {
     };
 
     if (this.uglifyVersion.satisfies('>= 2.0.0')) {
-      target.options = merge(target.options, { 'ember-cli-uglify': { uglify: options.options } });
-      this.enableCompile = target.options['ember-cli-uglify'].enabled;
+      app.options = merge(app.options, { 'ember-cli-uglify': { uglify: options.options } });
+      this.enableCompile = app.options['ember-cli-uglify'].enabled;
     } else {
-      target.options.minifyJS = merge(target.options.minifyJS, options);
-      this.enableCompile = target.options.minifyJS.enabled;
+      app.options.minifyJS = merge(app.options.minifyJS, options);
+      this.enableCompile = app.options.minifyJS.enabled;
     }
 
     var templateCompilerInstance = {
@@ -60,7 +61,7 @@ module.exports = {
       ));
     }
 
-    target.registry.add('htmlbars-ast-plugin', templateCompilerInstance);
+    parent.registry.add('htmlbars-ast-plugin', templateCompilerInstance);
   },
 
   setupPreprocessorRegistry: function(type, registry) {

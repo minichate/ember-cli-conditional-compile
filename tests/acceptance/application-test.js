@@ -63,3 +63,22 @@ test('new style unless flag enabled blocks are shown', function(assert) {
     assert.equal(find('.new_flag_unless_disabled_bar').length, 0);
   });
 });
+
+test('Global flags on window object should be protected', function(assert) {
+  visit('/');
+
+  andThen(function() {
+    try {
+      window.ENABLE_FOO = false;
+    } catch (err) {
+      // do nothing, but satisfy ESLint.
+    }
+    try {
+      window.ENABLE_BAR = true;
+    } catch (err) {
+      // do nothing, but satisfy ESLint.
+    }
+    assert.equal(true, window.ENABLE_FOO);
+    assert.equal(false, window.ENABLE_BAR);
+  });
+});

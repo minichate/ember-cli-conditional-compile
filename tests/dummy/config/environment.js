@@ -25,6 +25,9 @@ module.exports = function(environment) {
       // when it is created
     },
 
+    'conditional-compile-features': {
+      enableLogs: true
+    },
     featureFlags: {
       ENABLE_FOO: true,
       ENABLE_BAR: false
