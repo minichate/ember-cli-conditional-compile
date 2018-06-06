@@ -1,5 +1,6 @@
 var initializer = {
-  name: 'ember-cli-conditional-compile-features'
+  name: 'ember-cli-conditional-compile-features',
+  initialize: function() {}
 };
 
 var feature_flags = EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS;
