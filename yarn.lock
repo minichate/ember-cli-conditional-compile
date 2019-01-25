@@ -1766,11 +1766,6 @@ bower-endpoint-parser@0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/bower-endpoint-parser/-/bower-endpoint-parser-0.2.2.tgz#00b565adbfab6f2d35addde977e97962acbcb3f6"
 
-bower@^1.8.8:
-  version "1.8.8"
-  resolved "https://registry.yarnpkg.com/bower/-/bower-1.8.8.tgz#82544be34a33aeae7efb8bdf9905247b2cffa985"
-  integrity sha512-1SrJnXnkP9soITHptSO+ahx3QKp3cVzn8poI6ujqc5SeOkg5iqM1pK9H+DSc2OQ8SnO0jC/NG4Ur/UIwy7574A==
-
 brace-expansion@^1.0.0:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.7.tgz#3effc3c50e000531fb720eaff80f0ae8ef23cf59"
@@ -3260,7 +3255,7 @@ ember-assign-polyfill@~2.4.0:
     ember-cli-babel "^6.6.0"
     ember-cli-version-checker "^2.0.0"
 
-ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2:
+ember-cli-babel@^6.11.0, ember-cli-babel@^6.12.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.18.0.tgz#3f6435fd275172edeff2b634ee7b29ce74318957"
   integrity sha512-7ceC8joNYxY2wES16iIBlbPSxwKDBhYwC8drU3ZEvuPDMwVv1KzxCNu1fvxyFEBWhwaRNTUxSCsEVoTd9nosGA==
@@ -3370,12 +3365,6 @@ ember-cli-htmlbars@~3.0.1:
     hash-for-dep "^1.2.3"
     json-stable-stringify "^1.0.0"
     strip-bom "^3.0.0"
-
-ember-cli-ic-ajax@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-ic-ajax/-/ember-cli-ic-ajax-1.0.0.tgz#359e885316924e3db8bedf07d77803dd39b26491"
-  dependencies:
-    ic-ajax "~2.0.1"
 
 ember-cli-inject-live-reload@~2.0.1:
   version "2.0.1"
@@ -3595,18 +3584,6 @@ ember-cli@~3.7.1:
     walk-sync "^1.0.0"
     watch-detector "^0.1.0"
     yam "^1.0.0"
-
-ember-disable-prototype-extensions@~1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/ember-disable-prototype-extensions/-/ember-disable-prototype-extensions-1.1.3.tgz#1969135217654b5e278f9fe2d9d4e49b5720329e"
-  integrity sha1-GWkTUhdlS14nj5/i2dTkm1cgMp4=
-
-ember-disable-proxy-controllers@~1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/ember-disable-proxy-controllers/-/ember-disable-proxy-controllers-1.0.2.tgz#923b2ada09fc1a87ba5728ca11eb8b3ef84f4cbe"
-  integrity sha512-n3ldcJ7QtowV30tTEOkc/LEC1Xssqn8rZ2DDYJLVjMZIa32+p0TbJBXr+8kvThgzi5EZACNoI4Y3cLRW5OLJnw==
-  dependencies:
-    ember-cli-babel "^6.16.0"
 
 ember-load-initializers@2.0.0:
   version "2.0.0"
@@ -5264,10 +5241,6 @@ http-signature@~1.2.0:
     assert-plus "^1.0.0"
     jsprim "^1.2.2"
     sshpk "^1.7.0"
-
-ic-ajax@~2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/ic-ajax/-/ic-ajax-2.0.2.tgz#50c8ab1c494320fac66830ce1ee3990ab827f596"
 
 iconv-lite@0.4.23:
   version "0.4.23"
