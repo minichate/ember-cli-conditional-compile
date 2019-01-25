@@ -1,13 +1,10 @@
-import Ember from 'ember';
 
-var initializer = {
+const initializer = {
   name: 'ember-cli-conditional-compile-features',
-  initialize: function(application) {
-    Ember.Logger.info('Initializing feature flags');
-  }
+  initialize: function() {}
 };
 
-var feature_flags = EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS;
+const feature_flags = EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS;
 Object.keys(feature_flags).map(function(flag) {
   window[flag] = feature_flags[flag];
 })

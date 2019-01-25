@@ -13,6 +13,8 @@ module.exports = {
     'node': true
   },
   globals: {
+    'window': true,
+    'EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS': true,
     'ENABLE_FOO': true,
     'ENABLE_BAR': true,
     'visit': true,
