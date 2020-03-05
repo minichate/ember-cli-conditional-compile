@@ -101,7 +101,7 @@ You can also use the `unless-flag` style block helper:
 
 ## Production environment
 
-We use UglifyJS's `global_defs` feature to replace the value of feature flags with their constant values. UglifyJS's dead code implementation than cleans up unreachable code and performs inlining, such that:
+We use UglifyJS's `global_defs` feature to replace the value of feature flags with their constant values. UglifyJS's dead code implementation then cleans up unreachable code and performs inlining, such that:
 
 ```javascript
 if (ENABLE_FOO) {
