@@ -1,11 +1,12 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { computed } from '@ember/object'
 
-export default Ember.Controller.extend({
-  foo: Ember.computed(() => {
+export default Controller.extend({
+  foo: computed(function() {
     return ENABLE_FOO;
   }),
 
-  bar: Ember.computed(() => {
+  bar: computed(function() {
     return ENABLE_BAR;
   })
 });

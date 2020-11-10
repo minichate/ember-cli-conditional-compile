@@ -1,65 +1,54 @@
-import { test } from 'qunit';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit'
+import { visit, find, findAll } from '@ember/test-helpers'
 
-moduleForAcceptance('Acceptance | application');
+module('Acceptance | application', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('enabled flags are shown', function(assert) {
-  visit('/');
+  test('enabled flags are shown', async function(assert) {
+    await visit('/');
 
-  andThen(function() {
-    assert.equal(find('.enabled_foo').length, 1);
-    assert.equal(find('.enabled_foo').text(), 'ENABLED_FOO!! \\o/');
+    assert.equal(findAll('.enabled_foo').length, 1);
+    assert.equal(find('.enabled_foo').textContent, 'ENABLED_FOO!! \\o/');
   });
-});
 
-test('enabled flags are shown for unless helper', function(assert) {
-  visit('/');
+  test('enabled flags are shown for unless helper', async function(assert) {
+    await visit('/');
 
-  andThen(function() {
-    assert.equal(find('.unless_disabled_foo').length, 1);
-    assert.equal(find('.unless_disabled_foo').text(), 'DISABLED_FOO!! \\o/');
+    assert.equal(findAll('.unless_disabled_foo').length, 1);
+    assert.equal(find('.unless_disabled_foo').textContent, 'DISABLED_FOO!! \\o/');
   });
-});
 
-test('disabled flags are not shown', function(assert) {
-  visit('/');
+  test('disabled flags are not shown', async function(assert) {
+    await visit('/');
 
-  andThen(function() {
-    assert.equal(find('.enabled_bar').length, 0);
+    assert.equal(find('.enabled_bar'), null);
   });
-});
 
-test('disabled else blocks are shown', function(assert) {
-  visit('/');
+  test('disabled else blocks are shown', async function(assert) {
+    await visit('/');
 
-  andThen(function() {
-    assert.equal(find('.disabled_bar').length, 1);
-    assert.equal(find('.disabled_bar').text(), 'DISABLED_BAR!! \\o/');
+    assert.equal(findAll('.disabled_bar').length, 1);
+    assert.equal(find('.disabled_bar').textContent, 'DISABLED_BAR!! \\o/');
   });
-});
 
-test('enabled else blocks are not shown', function(assert) {
-  visit('/');
+  test('enabled else blocks are not shown', async function(assert) {
+    await visit('/');
 
-  andThen(function() {
-    assert.equal(find('.disabled_foo').length, 0);
+    assert.equal(find('.disabled_foo'), null);
   });
-});
 
-test('new style flag enabled blocks are shown', function(assert) {
-  visit('/');
+  test('new style flag enabled blocks are shown', async function(assert) {
+    await visit('/');
 
-  andThen(function() {
-    assert.equal(find('.new_flag_enabled_foo').length, 1);
-    assert.equal(find('.new_flag_disabled_foo').length, 0);
+    assert.equal(findAll('.new_flag_enabled_foo').length, 1);
+    assert.equal(find('.new_flag_disabled_foo'), null);
   });
-});
 
-test('new style unless flag enabled blocks are shown', function(assert) {
-  visit('/');
+  test('new style unless flag enabled blocks are shown', async function(assert) {
+    await visit('/');
 
-  andThen(function() {
-    assert.equal(find('.new_flag_unless_enabled_bar').length, 1);
-    assert.equal(find('.new_flag_unless_disabled_bar').length, 0);
+    assert.equal(findAll('.new_flag_unless_enabled_bar').length, 1);
+    assert.equal(find('.new_flag_unless_disabled_bar'), null);
   });
 });
