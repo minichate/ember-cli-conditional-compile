@@ -121,7 +121,10 @@ module.exports = {
 
     Object.keys(this._config.featureFlags).forEach(function(flag) {
       if (this._config.includeDirByFlag && !this._config.featureFlags[flag] && this._config.includeDirByFlag[flag]) {
-        excludes = excludes.concat(config.modulePrefix + '/' + this._config.includeDirByFlag[flag]);
+        const flaggedExcludes = this._config.includeDirByFlag[flag].map(function(glob) {
+          return config.modulePrefix + '/' + glob;
+        })
+        excludes = excludes.concat(flaggedExcludes);
       }
     }, this);
 
