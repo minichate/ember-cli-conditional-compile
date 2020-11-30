@@ -69,11 +69,13 @@ module.exports = {
 
   readConfig() {
     const root = this.project.root;
+    const config = this.project.config(EmberApp.env())
+    const flagsEnv = config.featureFlagsEnvironment || EmberApp.env()
 
     let configFactory = path.join(root, 'config', 'feature-flags.js');
 
     if (fs.existsSync(configFactory)) {
-      this._config = Object.assign({}, require(configFactory)(EmberApp.env()));
+      this._config = Object.assign({}, require(configFactory)(flagsEnv));
     } else {
       this._config = { featureFlags: {} };
     }
