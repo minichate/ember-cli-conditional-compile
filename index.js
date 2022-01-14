@@ -1,11 +1,11 @@
-var Funnel = require('broccoli-funnel');
-var EmberApp = require('ember-cli/lib/broccoli/ember-app');
-var merge = require('lodash.merge');
-var replace = require('broccoli-replace');
-var chalk = require('chalk');
-var VersionChecker = require('ember-cli-version-checker');
-var TemplateCompiler = require('./lib/template-compiler');
-var hash = require('object-hash');
+let Funnel = require('broccoli-funnel');
+let EmberApp = require('ember-cli/lib/broccoli/ember-app');
+let merge = require('lodash.merge');
+let replace = require('broccoli-replace');
+let chalk = require('chalk');
+let VersionChecker = require('ember-cli-version-checker');
+let TemplateCompiler = require('./lib/template-compiler');
+let hash = require('object-hash');
 
 module.exports = {
   name: 'ember-cli-conditional-compile',
@@ -14,18 +14,19 @@ module.exports = {
   init: function() {
     this._super.init && this._super.init.apply(this, arguments);
 
-    var checker = new VersionChecker(this);
+    let checker = new VersionChecker(this);
     checker.forEmber().assertAbove('2.9.0');
 
     this.htmlbarsVersion = checker.for('ember-cli-htmlbars', 'npm');
     this.uglifyVersion = checker.for('ember-cli-uglify', 'npm');
+    this.terserVersion = checker.for('ember-cli-terser', 'npm');
   },
 
   included: function(app, parentAddon) {
-    var target = (parentAddon || app);
-    var config = this.project.config(target.env);
+    let target = (parentAddon || app);
+    let config = this.project.config(target.env);
 
-    var options = {
+    let options = {
       options: {
         compress: {
           global_defs: config.featureFlags
@@ -33,7 +34,10 @@ module.exports = {
       }
     };
 
-    if (this.uglifyVersion.satisfies('>= 2.0.0')) {
+    if (this.terserVersion.satisfies('>= 0.0.0')) {
+      target.options = merge(target.options, { 'ember-cli-terser': { terser: options.options } });
+      this.enableCompile = target.options['ember-cli-terser'].enabled;
+    } else if (this.uglifyVersion.satisfies('>= 2.0.0')) {
       target.options = merge(target.options, { 'ember-cli-uglify': { uglify: options.options } });
       this.enableCompile = target.options['ember-cli-uglify'].enabled;
     } else {
@@ -41,7 +45,7 @@ module.exports = {
       this.enableCompile = target.options.minifyJS.enabled;
     }
 
-    var templateCompilerInstance = {
+    let templateCompilerInstance = {
       name: 'conditional-compile-template',
       plugin: TemplateCompiler(config.featureFlags)
     }
@@ -76,15 +80,15 @@ module.exports = {
    * removes the code non reachable.
    */
   transpileTree(tree, config) {
-    var esTranspiler = require('broccoli-babel-transpiler');
-    var inlineFeatureFlags = require('babel-plugin-inline-replace-variables');
+    let esTranspiler = require('broccoli-babel-transpiler');
+    let inlineFeatureFlags = require('babel-plugin-inline-replace-variables');
     var config = this.project.config(EmberApp.env());
     if (!this.enableCompile) {
       return tree;
     }
     return esTranspiler(tree, {
       plugins: [
-        [ inlineFeatureFlags, config.featureFlags ]
+        [inlineFeatureFlags, config.featureFlags]
       ]
     });
   },
@@ -93,7 +97,7 @@ module.exports = {
   postprocessTree: function(type, tree) {
     if (type !== 'js') return tree;
 
-    var config = this.project.config(EmberApp.env());
+    let config = this.project.config(EmberApp.env());
 
     if (!config.featureFlags) {
       console.log(chalk.red(
@@ -103,7 +107,7 @@ module.exports = {
       return tree;
     }
 
-    var excludes = [];
+    let excludes = [];
 
     Object.keys(config.featureFlags).map(function(flag) {
       if (config.includeDirByFlag && !config.featureFlags[flag] && config.includeDirByFlag[flag]) {

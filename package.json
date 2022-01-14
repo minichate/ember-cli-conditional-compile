@@ -10,7 +10,7 @@
     "lint": "eslint lib tests",
     "start": "ember server",
     "build": "ember build",
-    "test": "yarn lint && yarn test:node && ember try:testall",
+    "test": "yarn lint && yarn test:node && ember try:each",
     "test:node": "mocha node-tests"
   },
   "repository": "https://github.com/minichate/ember-cli-conditional-compile.git",
