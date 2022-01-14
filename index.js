@@ -34,7 +34,7 @@ module.exports = {
       }
     };
 
-    if (this.terserVersion.satisfies('>= 0.0.0')) {
+    if (this.terserVersion.exists()) {
       target.options = merge(target.options, { 'ember-cli-terser': { terser: options.options } });
       this.enableCompile = target.options['ember-cli-terser'].enabled;
     } else if (this.uglifyVersion.satisfies('>= 2.0.0')) {
