@@ -1,10 +1,15 @@
 bower_components/
 tests/
+node-tests/
 tmp/
 dist/
+config/ember-try.js
 
+Makefile
 .bowerrc
 .editorconfig
+.eslintrc.js
+.watchmanconfig
 .ember-cli
 .travis.yml
 .npmignore
@@ -12,4 +17,5 @@ dist/
 bower.json
 ember-cli-build.js
 Brocfile.js
-testem.json
+testem.js
+README.md
