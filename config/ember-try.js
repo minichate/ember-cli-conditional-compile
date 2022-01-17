@@ -6,8 +6,7 @@ module.exports = {
       name: 'with ember-cli-uglify 1.2.x',
       npm: {
         devDependencies: {
-          "ember-cli-uglify": "~1.2.0",
-          "ember-source": ">2.13"
+          "ember-cli-uglify": "~1.2.0"
         }
       }
     },
@@ -15,8 +14,15 @@ module.exports = {
       name: 'with ember-cli-uglify 2.x',
       npm: {
         devDependencies: {
-          "ember-cli-uglify": "~2.0",
-          "ember-source": ">2.13"
+          "ember-cli-uglify": "~2.0"
+        }
+      }
+    },
+    {
+      name: 'with ember-cli-terser',
+      npm: {
+        devDependencies: {
+          'ember-cli-terser': '4.0'
         }
       }
     }
