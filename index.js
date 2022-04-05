@@ -1,4 +1,3 @@
-let Funnel = require('broccoli-funnel');
 let EmberApp = require('ember-cli/lib/broccoli/ember-app');
 let merge = require('lodash.merge');
 let replace = require('broccoli-replace');
@@ -16,7 +15,7 @@ module.exports = {
     this._super.init && this._super.init.apply(this, arguments);
 
     let checker = new VersionChecker(this);
-    checker.forEmber().assertAbove('2.9.0');
+    checker.for('ember-source').assertAbove('2.9.0');
 
     this.htmlbarsVersion = checker.for('ember-cli-htmlbars', 'npm');
     this.uglifyVersion = checker.for('ember-cli-uglify', 'npm');

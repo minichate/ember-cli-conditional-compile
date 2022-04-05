@@ -20,9 +20,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.10.3",
     "babel-eslint": "~10.1.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
     "broccoli-asset-rev": "~3.0.0",
     "broccoli-test-helper": "^2.0.0",
     "chai": "^4.2.0",
