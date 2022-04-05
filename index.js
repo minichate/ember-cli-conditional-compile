@@ -1,13 +1,13 @@
-const EmberApp = require('ember-cli/lib/broccoli/ember-app');
-const merge = require('lodash.merge');
-const replace = require('broccoli-replace');
-const chalk = require('chalk');
-const VersionChecker = require('ember-cli-version-checker');
-const TemplateCompiler = require('./lib/template-compiler');
-const hash = require('object-hash');
+let Funnel = require('broccoli-funnel');
+let EmberApp = require('ember-cli/lib/broccoli/ember-app');
+let merge = require('lodash.merge');
+let replace = require('broccoli-replace');
+let chalk = require('chalk');
+let VersionChecker = require('ember-cli-version-checker');
+let TemplateCompiler = require('./lib/template-compiler');
+let hash = require('object-hash');
 const fs = require('fs');
 const path = require('path');
-
 module.exports = {
   name: 'ember-cli-conditional-compile',
   enableCompile: false,
@@ -15,27 +15,30 @@ module.exports = {
   init: function() {
     this._super.init && this._super.init.apply(this, arguments);
 
-    const checker = new VersionChecker(this);
-    checker.for('ember-source').assertAbove('2.9.0');
+    let checker = new VersionChecker(this);
+    checker.forEmber().assertAbove('2.9.0');
 
     this.htmlbarsVersion = checker.for('ember-cli-htmlbars', 'npm');
     this.uglifyVersion = checker.for('ember-cli-uglify', 'npm');
+    this.terserVersion = checker.for('ember-cli-terser', 'npm');
   },
 
   included: function(app, parentAddon) {
+    let target = (parentAddon || app);
     this.readConfig()
-
-    const target = (parentAddon || app);
 
     let options = {
       options: {
         compress: {
-          global_defs: this._config.featureFlags
+          global_defs: this.config.featureFlags
         }
       }
     };
 
-    if (this.uglifyVersion.satisfies('>= 2.0.0')) {
+    if (this.terserVersion.exists()) {
+      target.options = merge(target.options, { 'ember-cli-terser': { terser: options.options } });
+      this.enableCompile = target.options['ember-cli-terser'].enabled;
+    } else if (this.uglifyVersion.satisfies('>= 2.0.0')) {
       target.options = merge(target.options, { 'ember-cli-uglify': { uglify: options.options } });
       this.enableCompile = target.options['ember-cli-uglify'].enabled;
     } else {
@@ -43,7 +46,7 @@ module.exports = {
       this.enableCompile = target.options.minifyJS.enabled;
     }
 
-    const templateCompilerInstance = {
+    let templateCompilerInstance = {
       name: 'conditional-compile-template',
       plugin: TemplateCompiler(this._config.featureFlags)
     }
