@@ -19,7 +19,6 @@ describe('ember-cli-conditional-compile', function() {
   beforeEach(function() {
     let project = {
       root: __dirname,
-      bowerDirectory: '../bower_components',
       config: function() {
         return {
           featureFlags: {
