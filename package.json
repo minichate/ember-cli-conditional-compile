@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "lint": "eslint lib tests",
+    "lint": "eslint app config lib tests",
     "start": "ember server",
     "build": "ember build",
     "test": "yarn test:node && yarn test:ember",

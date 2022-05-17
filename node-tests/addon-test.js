@@ -29,7 +29,7 @@ describe('ember-cli-conditional-compile', function() {
     };
     this.addon = new Addon({
       project,
-      parent: project,
+      parent: project
     });
   });
 
