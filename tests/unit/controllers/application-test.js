@@ -1,15 +1,15 @@
-import { moduleFor, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from '../../helpers/index';
 
-moduleFor('controller:application', 'Unit | Controller | application', {
-  // Specify the other units that are required for this test.
-  // needs: ['controller:foo']
-});
+module('Unit | Controller | application', function(hooks) {
+  setupTest(hooks);
 
-// Replace this with your real tests.
-test('properties are set correctly', function(assert) {
-  let controller = this.subject();
-  assert.ok(controller);
+  // Replace this with your real tests.
+  test('it can access set properties', function(assert) {
+    let controller = this.owner.lookup('controller:application');
 
-  assert.equal(true, controller.get('foo'));
-  assert.equal(false, controller.get('bar'));
+    assert.ok(controller);
+    assert.equal(true, controller.get('foo'));
+    assert.equal(false, controller.get('bar'));
+  });
 });
