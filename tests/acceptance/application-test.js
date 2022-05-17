@@ -4,6 +4,7 @@ import { setupApplicationTest } from '../helpers/index';
 
 module('Acceptance | application', function(hooks) {
   setupApplicationTest(hooks);
+
   test('enabled flags are shown', async function(assert) {
     await visit('/');
     assert.dom('.enabled_foo').exists().hasText('ENABLED_FOO!! \\o/');

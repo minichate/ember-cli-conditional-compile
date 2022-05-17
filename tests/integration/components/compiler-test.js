@@ -3,7 +3,7 @@ import { setupRenderingTest } from '../../helpers/index';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | compiler', async function(hooks) {
+module('Integration | Component | compiler', function(hooks) {
   setupRenderingTest(hooks);
 
   test('precompile enabled flags', async function(assert) {
