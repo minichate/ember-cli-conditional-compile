@@ -2,47 +2,61 @@
   "name": "ember-cli-conditional-compile",
   "version": "1.2.0",
   "description": "Conditional compilation (feature-flags) for Ember apps",
+  "keywords": [
+    "ember-addon",
+    "ember-cli",
+    "feature-flags",
+    "ember-compile"
+  ],
+  "repository": "https://github.com/minichate/ember-cli-conditional-compile.git",
+  "license": "MIT",
+  "author": "",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
   "scripts": {
+    "build": "ember build",
     "lint": "eslint app config lib tests",
     "start": "ember server",
-    "build": "ember build",
     "test": "yarn test:node && yarn test:ember",
-    "test:node": "mocha node-tests",
-    "test:ember": "ember test"
+    "test:ember": "ember test",
+    "test:node": "mocha node-tests"
   },
-  "repository": "https://github.com/minichate/ember-cli-conditional-compile.git",
-  "engines": {
-    "node": "12.* || 14.* || >= 16"
+  "dependencies": {
+    "babel-plugin-inline-replace-variables": "1.3.1",
+    "broccoli-babel-transpiler": "^7.1.1",
+    "broccoli-funnel": "~2.0.1",
+    "broccoli-replace": "0.12.0",
+    "chalk": "~2.4.2",
+    "ember-cli-babel": "^7.26.11",
+    "ember-cli-version-checker": "~3.0.1",
+    "lodash.merge": "~4.6.1",
+    "object-hash": "^1.3.1"
   },
-  "ember": {
-    "edition": "classic"
-  },
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@ember/optional-features": "^1.3.0",
     "@ember/test-helpers": "^2.7.0",
+    "@glimmer/component": "^1.0.0",
+    "@glimmer/tracking": "^1.0.0",
     "babel-eslint": "~10.0.1",
     "broccoli-asset-rev": "~3.0.0",
     "broccoli-test-helper": "^2.0.0",
     "chai": "^4.2.0",
     "co": "^4.6.0",
     "common-tags": "^1.8.0",
+    "ember-auto-import": "^2.4.2",
     "ember-cli": "^4.4.0",
     "ember-cli-dependency-checker": "~3.3.1",
     "ember-cli-eslint": "~5.1.0",
     "ember-cli-htmlbars": "6.0.1",
     "ember-cli-inject-live-reload": "~2.0.1",
     "ember-cli-release": "~1.0.0-beta.2",
-    "ember-cli-shims": "1.2.0",
-    "ember-cli-test-loader": "~2.2.0",
     "ember-load-initializers": "2.0.0",
     "ember-maybe-import-regenerator": "^1.0.0",
     "ember-qunit": "^5.1.5",
-    "ember-resolver": "~5.0.1",
+    "ember-resolver": "^8.0.3",
     "ember-source": "^4.4.0",
     "ember-try": "^1.1.0",
     "eslint": "~5.12.1",
@@ -51,29 +65,19 @@
     "loader.js": "4.7.0",
     "mocha": "^5.2.0",
     "qunit": "^2.19.1",
-    "qunit-dom": "^2.0.0"
+    "qunit-dom": "^2.0.0",
+    "webpack": "^5.72.1"
   },
-  "dependencies": {
-    "babel-plugin-inline-replace-variables": "1.3.1",
-    "broccoli-babel-transpiler": "^7.1.1",
-    "broccoli-funnel": "~2.0.1",
-    "broccoli-replace": "0.12.0",
-    "chalk": "~2.4.2",
-    "ember-cli-babel": "~7.4.0",
-    "ember-cli-version-checker": "~3.0.1",
-    "lodash.merge": "~4.6.1",
-    "object-hash": "^1.3.1"
+  "engines": {
+    "node": "12.* || 14.* || >= 16"
+  },
+  "ember": {
+    "edition": "octane"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "versionCompatibility": {
       "ember": ">= 3.15.0"
     }
-  },
-  "keywords": [
-    "ember-addon",
-    "ember-cli",
-    "feature-flags",
-    "ember-compile"
-  ]
+  }
 }
