@@ -13,6 +13,16 @@
 /connect.lock
 /coverage/*
 /libpeerconnection.log
-npm-debug.log
-testem.log
+/npm-debug.log*
+/testem.log
+/yarn-error.log
 .tool-versions
+
+# ember-try
+/.node_modules.ember-try/
+/bower.json.ember-try
+/npm-shrinkwrap.json.ember-try
+/package.json.ember-try
+/package-lock.json.ember-try
+/yarn.lock.ember-try
+
