@@ -36,8 +36,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Install Node
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 14.x
           cache: yarn
@@ -59,10 +58,12 @@ jobs:
           - ember-lts-3.20
           - ember-lts-3.24
           - ember-lts-3.28
-          # - ember-release
-          # - ember-beta
-          # - ember-canary
+          - ember-release
+          - ember-beta
+          - ember-canary
           - ember-classic
+          # - embroider-safe
+          # - embroider-optimized
 
     steps:
       - uses: actions/checkout@v3
