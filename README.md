@@ -1,8 +1,6 @@
 # ember-cli-conditional-compile
 
-[![Build Status](https://travis-ci.org/minichate/ember-cli-conditional-compile.svg?branch=master)](https://travis-ci.org/minichate/ember-cli-conditional-compile)
-[![Dependency Status](https://david-dm.org/minichate/ember-cli-conditional-compile.svg)](https://david-dm.org/minichate/ember-cli-conditional-compile)
-[![devDependency Status](https://david-dm.org/minichate/ember-cli-conditional-compile/dev-status.svg)](https://david-dm.org/minichate/ember-cli-conditional-compile#info=devDependencies)
+![Build Status](https://github.com/minichate/ember-cli-conditional-compile/actions/workflows/ci.yml/badge.svg)
 
 The goal of ember-cli-conditional-compile is to provide easy to use feature switches to Ember applications such that code that is hidden behind a disabled feature switch is not in the compiled code.
 
