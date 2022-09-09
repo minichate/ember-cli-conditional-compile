@@ -31,6 +31,7 @@ describe('ember-cli-conditional-compile', function() {
       project,
       parent: project
     });
+    this.addon.readConfig()
   });
 
   describe('transpileTree', function() {

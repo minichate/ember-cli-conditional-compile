@@ -1,11 +1,13 @@
-let Funnel = require('broccoli-funnel');
-let EmberApp = require('ember-cli/lib/broccoli/ember-app');
-let merge = require('lodash.merge');
-let replace = require('broccoli-replace');
-let chalk = require('chalk');
-let VersionChecker = require('ember-cli-version-checker');
-let TemplateCompiler = require('./lib/template-compiler');
-let hash = require('object-hash');
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const Funnel = require('broccoli-funnel');
+const merge = require('lodash.merge');
+const replace = require('broccoli-replace');
+const chalk = require('chalk');
+const VersionChecker = require('ember-cli-version-checker');
+const TemplateCompiler = require('./lib/template-compiler');
+const hash = require('object-hash');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
   name: 'ember-cli-conditional-compile',
@@ -14,8 +16,8 @@ module.exports = {
   init: function() {
     this._super.init && this._super.init.apply(this, arguments);
 
-    let checker = new VersionChecker(this);
-    checker.forEmber().assertAbove('2.9.0');
+    const checker = new VersionChecker(this);
+    checker.for('ember-source').assertAbove('2.9.0');
 
     this.htmlbarsVersion = checker.for('ember-cli-htmlbars', 'npm');
     this.uglifyVersion = checker.for('ember-cli-uglify', 'npm');
@@ -23,13 +25,14 @@ module.exports = {
   },
 
   included: function(app, parentAddon) {
-    let target = (parentAddon || app);
-    let config = this.project.config(target.env);
+    this.readConfig()
+
+    const target = (parentAddon || app);
 
     let options = {
       options: {
         compress: {
-          global_defs: config.featureFlags
+          global_defs: this._config.featureFlags
         }
       }
     };
@@ -45,9 +48,9 @@ module.exports = {
       this.enableCompile = target.options.minifyJS.enabled;
     }
 
-    let templateCompilerInstance = {
+    const templateCompilerInstance = {
       name: 'conditional-compile-template',
-      plugin: TemplateCompiler(config.featureFlags)
+      plugin: TemplateCompiler(this._config.featureFlags)
     }
 
     if (this.htmlbarsVersion.satisfies('>= 1.3.0')) {
@@ -55,8 +58,10 @@ module.exports = {
         return __dirname;
       };
 
+      const featureFlags = this._config.featureFlags
+
       templateCompilerInstance['cacheKey'] = function() {
-        return hash(config.featureFlags);
+        return hash(featureFlags);
       };
     } else {
       console.log(chalk.yellow(
@@ -65,6 +70,18 @@ module.exports = {
     }
 
     target.registry.add('htmlbars-ast-plugin', templateCompilerInstance);
+  },
+
+  readConfig() {
+    const root = this.project.root;
+
+    let configFactory = path.join(root, 'config', 'feature-flags.js');
+
+    if (fs.existsSync(configFactory)) {
+      this._config = Object.assign({}, require(configFactory)(EmberApp.env()));
+    } else {
+      this._config = { featureFlags: {} };
+    }
   },
 
   setupPreprocessorRegistry: function(type, registry) {
@@ -79,27 +96,25 @@ module.exports = {
    * Inline feature flags value so that babili's dead code elimintation plugin
    * removes the code non reachable.
    */
-  transpileTree(tree, config) {
-    let esTranspiler = require('broccoli-babel-transpiler');
-    let inlineFeatureFlags = require('babel-plugin-inline-replace-variables');
-    var config = this.project.config(EmberApp.env());
+  transpileTree(tree) {
+    const esTranspiler = require('broccoli-babel-transpiler');
+    const inlineFeatureFlags = require('babel-plugin-inline-replace-variables');
     if (!this.enableCompile) {
       return tree;
     }
     return esTranspiler(tree, {
       plugins: [
-        [inlineFeatureFlags, config.featureFlags]
+        [inlineFeatureFlags, this._config.featureFlags]
       ]
     });
   },
-
 
   postprocessTree: function(type, tree) {
     if (type !== 'js') return tree;
 
     let config = this.project.config(EmberApp.env());
 
-    if (!config.featureFlags) {
+    if (!this._config.featureFlags) {
       console.log(chalk.red(
         'Could not find any feature flags.' +
         'You may need to add them in your config/environment.js'
@@ -109,9 +124,9 @@ module.exports = {
 
     let excludes = [];
 
-    Object.keys(config.featureFlags).map(function(flag) {
-      if (config.includeDirByFlag && !config.featureFlags[flag] && config.includeDirByFlag[flag]) {
-        excludes = excludes.concat(config.includeDirByFlag[flag]);
+    Object.keys(this._config.featureFlags).map(function(flag) {
+      if (this._config.includeDirByFlag && !this._config.featureFlags[flag] && this._config.includeDirByFlag[flag]) {
+        excludes = excludes.concat(this._config.includeDirByFlag[flag]);
       }
     });
 
@@ -124,7 +139,7 @@ module.exports = {
         files: [config.modulePrefix + '/initializers/ember-cli-conditional-compile-features.js'],
         patterns: [{
           match: /EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS/g,
-          replacement: JSON.stringify(config.featureFlags || {})
+          replacement: JSON.stringify(this._config.featureFlags || {})
         }]
       });
     }
@@ -134,4 +149,6 @@ module.exports = {
       description: 'Funnel: Conditionally Filtered App'
     });
   }
+
+
 };

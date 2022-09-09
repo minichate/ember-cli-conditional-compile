@@ -23,14 +23,6 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    },
-
-    featureFlags: {
-      ENABLE_FOO: true,
-      ENABLE_BAR: false
-    },
-    includeDirByFlag: {
-      ENABLE_FOO: []
     }
   };
 
