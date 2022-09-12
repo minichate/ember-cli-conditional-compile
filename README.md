@@ -27,7 +27,7 @@ var ENV = {
         ENABLE_BAR: true
     },
     includeDirByFlag: {
-        ENABLE_FOO: [/pods\/foos/, /pods\/foo/],
+        ENABLE_FOO: ['pods/foos/**', 'pods/foo/**'],
         ENABLE_BAR: [],
     }
 };

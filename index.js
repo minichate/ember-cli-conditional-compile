@@ -1,4 +1,3 @@
-let Funnel = require('broccoli-funnel');
 let EmberApp = require('ember-cli/lib/broccoli/ember-app');
 let merge = require('lodash.merge');
 let replace = require('broccoli-replace');
@@ -109,16 +108,25 @@ module.exports = {
 
     let excludes = [];
 
-    Object.keys(config.featureFlags).map(function(flag) {
+    Object.keys(config.featureFlags).forEach(function(flag) {
       if (config.includeDirByFlag && !config.featureFlags[flag] && config.includeDirByFlag[flag]) {
-        excludes = excludes.concat(config.includeDirByFlag[flag]);
+        const flaggedExcludes = this._config.includeDirByFlag[flag].map(function(glob) {
+          return config.modulePrefix + '/' + glob;
+        })
+        excludes = excludes.concat(flaggedExcludes);
       }
     });
 
     if (this.enableCompile) {
-      excludes = excludes.concat(
-        /ember-cli-conditional-compile-features.js/
-      );
+      tree = replace(tree, {
+        files: [config.modulePrefix + '/initializers/ember-cli-conditional-compile-features.js'],
+        patterns: [
+          {
+            match: /EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS/g,
+            replacement: '{}'
+          }
+        ]
+      })
     } else {
       tree = replace(tree, {
         files: [config.modulePrefix + '/initializers/ember-cli-conditional-compile-features.js'],
@@ -129,9 +137,12 @@ module.exports = {
       });
     }
 
-    return new Funnel(tree, {
-      exclude: excludes,
-      description: 'Funnel: Conditionally Filtered App'
-    });
+    return replace(tree, {
+      files: excludes,
+      patterns: [{
+        match: /.*/g,
+        replacement: '/**/'
+      }]
+    })
   }
 };
