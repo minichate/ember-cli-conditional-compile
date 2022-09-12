@@ -88,7 +88,10 @@ module.exports = {
     if (fs.existsSync(configFactory)) {
       this._config = Object.assign({}, require(configFactory)(flagsEnv));
     } else {
-      this._config = { featureFlags: {} };
+      // try the app environment as a fallback
+      const envFeatureFlags = config['featureFlags'] || {};
+      const envIncludeDirByFlag = config['includeDirByFlag'] || {}
+      this._config = { featureFlags: envFeatureFlags, includeDirByFlag: envIncludeDirByFlag };
     }
   },
 
