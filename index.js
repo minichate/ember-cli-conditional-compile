@@ -12,7 +12,7 @@ module.exports = {
   name: "ember-cli-conditional-compile",
   enableCompile: false,
 
-  init: function() {
+  init: function () {
     this._super.init && this._super.init.apply(this, arguments);
 
     const checker = new VersionChecker(this);
@@ -23,7 +23,7 @@ module.exports = {
     this.terserVersion = checker.for("ember-cli-terser", "npm");
   },
 
-  included: function(app, parentAddon) {
+  included: function (app, parentAddon) {
     this.readConfig();
 
     const target = parentAddon || app;
@@ -31,19 +31,19 @@ module.exports = {
     let options = {
       options: {
         compress: {
-          global_defs: this._config.featureFlags
-        }
-      }
+          global_defs: this._config.featureFlags,
+        },
+      },
     };
 
     if (this.terserVersion.exists()) {
       target.options = merge(target.options, {
-        "ember-cli-terser": { terser: options.options }
+        "ember-cli-terser": { terser: options.options },
       });
       this.enableCompile = target.options["ember-cli-terser"].enabled;
     } else if (this.uglifyVersion.satisfies(">= 2.0.0")) {
       target.options = merge(target.options, {
-        "ember-cli-uglify": { uglify: options.options }
+        "ember-cli-uglify": { uglify: options.options },
       });
       this.enableCompile = target.options["ember-cli-uglify"].enabled;
     } else {
@@ -53,17 +53,17 @@ module.exports = {
 
     const templateCompilerInstance = {
       name: "conditional-compile-template",
-      plugin: TemplateCompiler(this._config.featureFlags)
+      plugin: TemplateCompiler(this._config.featureFlags),
     };
 
     if (this.htmlbarsVersion.satisfies(">= 1.3.0")) {
-      templateCompilerInstance["baseDir"] = function() {
+      templateCompilerInstance["baseDir"] = function () {
         return __dirname;
       };
 
       const featureFlags = this._config.featureFlags;
 
-      templateCompilerInstance["cacheKey"] = function() {
+      templateCompilerInstance["cacheKey"] = function () {
         return hash(featureFlags);
       };
     } else {
@@ -88,17 +88,20 @@ module.exports = {
       this._config = Object.assign({}, require(configFactory)(flagsEnv));
     } else {
       // try the app environment as a fallback
-      const envFeatureFlags = config['featureFlags'] || {};
-      const envIncludeDirByFlag = config['includeDirByFlag'] || {}
-      this._config = { featureFlags: envFeatureFlags, includeDirByFlag: envIncludeDirByFlag };
+      const envFeatureFlags = config["featureFlags"] || {};
+      const envIncludeDirByFlag = config["includeDirByFlag"] || {};
+      this._config = {
+        featureFlags: envFeatureFlags,
+        includeDirByFlag: envIncludeDirByFlag,
+      };
     }
   },
 
-  setupPreprocessorRegistry: function(type, registry) {
+  setupPreprocessorRegistry: function (type, registry) {
     registry.add("js", {
       name: "ember-cli-conditional-compile",
       ext: "js",
-      toTree: (tree) => this.transpileTree(tree)
+      toTree: (tree) => this.transpileTree(tree),
     });
   },
 
@@ -113,11 +116,11 @@ module.exports = {
       return tree;
     }
     return esTranspiler(tree, {
-      plugins: [[inlineFeatureFlags, this._config.featureFlags]]
+      plugins: [[inlineFeatureFlags, this._config.featureFlags]],
     });
   },
 
-  postprocessTree: function(type, tree) {
+  postprocessTree: function (type, tree) {
     if (type !== "js") return tree;
 
     let config = this.project.config(EmberApp.env());
@@ -135,43 +138,58 @@ module.exports = {
     let excludes = [];
 
     if (this._config.featureFlags) {
-      Object.keys(this._config.featureFlags).map(function(flag) {
+      Object.keys(this._config.featureFlags).map(function (flag) {
         if (
           this._config.includeDirByFlag &&
           !this._config.featureFlags[flag] &&
           this._config.includeDirByFlag[flag]
         ) {
-          const flaggedExcludes = this._config.includeDirByFlag[flag].map(function(glob) {
-            return config.modulePrefix + '/' + glob;
-          })
+          const flaggedExcludes = this._config.includeDirByFlag[flag].map(
+            function (glob) {
+              return config.modulePrefix + "/" + glob;
+            }
+          );
           excludes = excludes.concat(flaggedExcludes);
         }
       }, this);
     }
 
     if (this.enableCompile) {
-      excludes = excludes.concat(/ember-cli-conditional-compile-features.js/);
-    } else {
       tree = replace(tree, {
         files: [
           config.modulePrefix +
-            "/initializers/ember-cli-conditional-compile-features.js"
+            "/initializers/ember-cli-conditional-compile-features.js",
         ],
         patterns: [
           {
             match: /EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS/g,
-            replacement: JSON.stringify(this._config.featureFlags || {})
-          }
-        ]
+            replacement: "{}",
+          },
+        ],
+      });
+    } else {
+      tree = replace(tree, {
+        files: [
+          config.modulePrefix +
+            "/initializers/ember-cli-conditional-compile-features.js",
+        ],
+        patterns: [
+          {
+            match: /EMBER_CLI_CONDITIONAL_COMPILE_INJECTIONS/g,
+            replacement: JSON.stringify(this._config.featureFlags || {}),
+          },
+        ],
       });
     }
 
     return replace(tree, {
       files: excludes,
-      patterns: [{
-        match: /.*/g,
-        replacement: '/**/'
-      }]
-    })
-  }
+      patterns: [
+        {
+          match: /.*/g,
+          replacement: "/**/",
+        },
+      ],
+    });
+  },
 };
