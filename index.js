@@ -1,5 +1,4 @@
 const EmberApp = require("ember-cli/lib/broccoli/ember-app");
-const Funnel = require("broccoli-funnel");
 const merge = require("lodash.merge");
 const replace = require("broccoli-replace");
 const chalk = require("chalk");
@@ -142,7 +141,10 @@ module.exports = {
           !this._config.featureFlags[flag] &&
           this._config.includeDirByFlag[flag]
         ) {
-          excludes = excludes.concat(this._config.includeDirByFlag[flag]);
+          const flaggedExcludes = this._config.includeDirByFlag[flag].map(function(glob) {
+            return config.modulePrefix + '/' + glob;
+          })
+          excludes = excludes.concat(flaggedExcludes);
         }
       }, this);
     }
@@ -164,9 +166,12 @@ module.exports = {
       });
     }
 
-    return new Funnel(tree, {
-      exclude: excludes,
-      description: "Funnel: Conditionally Filtered App"
-    });
+    return replace(tree, {
+      files: excludes,
+      patterns: [{
+        match: /.*/g,
+        replacement: '/**/'
+      }]
+    })
   }
 };
