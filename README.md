@@ -39,6 +39,31 @@ if (environment === 'production') {
 }
 ```
 
+Alternatively, you can define your feature flags in `config/feature-flags.js` looking like this:
+
+```javascript
+module.exports = function(environment) {
+    const GLOBAL_FLAGS = {
+        featureFlags: {
+            ENABLE_FOO: true,
+            ENABLE_BAR: true
+        },
+        includeDirByFlag: {
+            ENABLE_FOO: [/pods\/foos/, /pods\/foo/],
+            ENABLE_BAR: [],
+        }
+    }
+
+    if (environment === 'production') {
+        GLOBAL_FLAGS.featureFlags.ENABLE_FOO = false;
+    }
+
+    return GLOBAL_FLAGS;
+}
+```
+
+This has two advantages: It declutters `environment.js` a bit, especially if you have many flags, but also prevents your flag names from leaking into the application code under certain circumstances.
+
 We'll look at the two new options in more detail below, but for now we can see that by default both features are enabled, but in the `production` environment `ENABLE_FOO` is disabled, and related code under the `pods/foos` and `pods/foo` directories are excluded from compilation. 
 
 ## ENV.featureFlags
@@ -141,6 +166,11 @@ will get transformed into:
 This is really handy, since it vastly cuts down on the amount of precompiled
 template code that your users need to download even though it'll never be
 executed!
+
+
+## Defining additional environments
+
+By defining `ENV.featureFlagsEnvironment` you can separate your feature flags by more than just test/development/production, for example to have a beta environment that is identical to production but has a couple more flags activated. This only works if you have your flags in `config.featureFlags` - The `environment` passed in into the wrapper function will be `ENV.featureFlagsEnvironment` if set.
 
 # Licence
 
